@@ -1,0 +1,112 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+public class Points
+{
+ 
+  Int centerpoints=0, points1=0, points2=0, points3=0, pointsu=0;
+  
+  public Points(Deck hand)
+  {
+    If (card1.getSuit() == ‘h’)
+    {
+      Centerpoints++;
+      Points1++;
+    }
+    If (card2.getSuit() == ‘h’)
+    {
+      Centerpoints++;
+      Points2++;
+    }
+    
+    If (card3.getSuit() == ‘h’)
+    {
+      Centerpoints++;
+      Points3++;
+    }
+    
+    If (card1.getSuit() == ‘s’ && card1.getRank() ==  12)
+    {
+      Centerpoints++;
+      Points1+=13;
+    }
+    
+    If (card2.getSuit() == ‘s’ && card1.getRank() ==  12)
+    {
+      Centerpoints+=13;
+      Points2+=13;
+    }
+    
+    If (card3.getSuit() == ‘s’ && card1.getRank() ==  12)
+    {
+      Centerpoints+=13;
+      Points3+=13;
+    }
+    
+  }
+  
+  Points(Card card1, Card card2, Deck hand)
+  {
+    
+    If (card1.getSuit() == ‘h’)
+    {
+      Centerpoints++;
+      Points1++;
+    }
+    If (card2.getSuit() == ‘h’)
+    {
+      Centerpoints++;
+      Points2++;
+    }
+    
+    If (card1.getSuit() == ‘s’ && card1.getRank() ==  12)
+    {
+      Centerpoints++;
+      Points1+=13;
+    }
+    
+    If (card2.getSuit() == ‘s’ && card1.getRank() ==  12)
+    {
+      Centerpoints+=13;
+      Points2+=13;
+    }
+
+  }
+  
+  Points (Card card1, Deck hand)
+  {
+    If (card1.getSuit() == ‘h’)
+    {
+      Centerpoints++;
+      Points1++;
+    }
+    
+    If (card1.getSuit() == ‘s’ && card1.getRank() ==  12)
+    {
+      Centerpoints++;
+      Points1+=13;
+    }
+    
+  }
+  
+  public int getPoints()
+  {
+     return Centerpoints; 
+  }
+  
+  public int getPlayerPoints(int num)
+  {
+     if (num==1)
+       return Points1;
+     
+     if (num==2)
+       return Points2;
+     
+     if (num==3)
+       return Points3);
+  }
+}
+  
+  
+  

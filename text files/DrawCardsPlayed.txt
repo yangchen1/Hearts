@@ -1,0 +1,53 @@
+import java.awt.*;
+import javax.swing.*;
+
+public class DrawCardsPlayed extends JPanel {
+	private int position;											//1 = west, 2 = north, 3 = east, 4 = south
+	private HDeck mDeck;															//displays card played
+	private String type;
+
+	public DrawCardsPlayed(Dimension size, HDeck mDeck, String type)							//draws a single card
+	{
+		this.mDeck = new HDeck();
+		this.mDeck = mDeck;
+		this.type = type;
+		this.setPreferredSize(size);
+		position = 0;											//default position
+	}
+
+	public void setPosition(int pos)								//sets the position
+	{
+		position = pos;
+	}
+
+	public void setType (String type)
+	{
+		this.type = type;
+	}
+
+	public void paintComponent (Graphics g)                                         //paints the deck
+	{
+		try{
+			switch(position){
+			case 1: 
+				mDeck.get(mDeck.getSize()-1).showCard(g, 0, 100);					//paints it at different places depending on the position
+				break;
+			case 2: 
+				mDeck.get(mDeck.getSize()-1).showCard(g, 200, 0);
+				break;
+			case 3: 
+				mDeck.get(mDeck.getSize()-1).showCard(g, 320, 100);
+				break;
+			case 4: 
+				super.paintComponent(g);												//clears the panel
+				mDeck.get(mDeck.getSize()-1).showCard(g, 200, 220);
+				break;
+			default:
+				super.paintComponent(g);
+				break;
+			}
+		}
+		catch(Exception e){
+		}
+	}
+}

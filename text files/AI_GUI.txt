@@ -1,0 +1,13 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+public class AI_GUI extends JPanel{
+  
+  public HeartsGUI()
+  {
+    
+    
+  }
+  
+}

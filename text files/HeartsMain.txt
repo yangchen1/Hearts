@@ -1,0 +1,20 @@
+import java.awt.Dimension;
+import javax.swing.*;
+
+public class HeartsMain {
+
+ static final Dimension windowSize = new Dimension(800,700);
+ 
+ public static void main(String[] args) {
+  HeartsGUI game = new HeartsGUI();
+  JFrame window = new JFrame();                    //create new JFrame for game
+  window.setContentPane(game);
+  window.setVisible(true);
+  window.setTitle ("Hearts");
+  window.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);  
+  window.setPreferredSize(windowSize);
+  window.pack();
+  window.setResizable(false);
+  window.setLocationRelativeTo(null);
+ }
+}

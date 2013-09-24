@@ -1,0 +1,20 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+public class AI extends Points
+{
+  int position;
+  
+  AI(Deck deck)
+  {
+    Points round = new Points (deck);
+    
+    round.getPoints();
+    
+  }
+  
+
+    
+}
+

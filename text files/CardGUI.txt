@@ -1,0 +1,293 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+class CardGUI extends JFrame
+{
+  private JPanel buttonPanel;                                                  //creates main panels and deck
+  private Deck fullDeck;
+  private DrawDeckPanel cardPanel; 
+  
+  private JComboBox rankText;                                                 //components for pop up dialogs
+  private JComboBox suitText;
+  private JDialog inputDialog;
+  private int whichBtn = 0;                                                        //different buttons use different listeners
+  private Card usercard;                                                       //card specified in popup boxes by user
+  private int rankUser;                                             //stores value of jcombobox
+  private int suitUser;  
+  
+  public CardGUI()
+  {  
+    buttonPanel = new JPanel();
+    fullDeck = new Deck(true);
+    cardPanel = new DrawDeckPanel(900, 700, fullDeck);
+    usercard = new Card();
+    
+    JButton showBtn = new JButton (" Show ");                        //initialize buttons for different functions and add their respective button listener 
+    showBtn.addActionListener(new ShowBtnListener());
+    JButton shuffleBtn = new JButton(" Shuffle ");                    
+    shuffleBtn.addActionListener (new ShuffleBtnListener ());
+    JButton dealBtn = new JButton(" Deal "); 
+    dealBtn.addActionListener (new DealBtnListener ());
+    JButton dealFirstBtn = new JButton(" Deal First Card ");
+    dealFirstBtn.addActionListener(new DealFirstBtnListener ());
+    JButton addBtn = new JButton(" Add "); 
+    addBtn.addActionListener (new AddBtnListener ());
+    JButton flipBtn = new JButton(" Flip "); 
+    flipBtn.addActionListener (new FlipBtnListener ());
+    JButton flipAllBtn = new JButton(" Flip Deck ");
+    flipAllBtn.addActionListener(new FlipAllBtnListener());
+    JButton quicksortBtn = new JButton(" Quicksort "); 
+    quicksortBtn.addActionListener (new QuicksortBtnListener ());
+    JButton combsortBtn = new JButton(" Combsort "); 
+    combsortBtn.addActionListener (new CombsortBtnListener ());
+    
+    buttonPanel.setLayout(new FlowLayout());                          //adds the buttons to the button panel
+    buttonPanel.add(showBtn);
+    buttonPanel.add(shuffleBtn);
+    buttonPanel.add(dealBtn);
+    buttonPanel.add(dealFirstBtn);
+    buttonPanel.add(addBtn);
+    buttonPanel.add(flipBtn);
+    buttonPanel.add(flipAllBtn);
+    buttonPanel.add(quicksortBtn);
+    buttonPanel.add(combsortBtn);
+    
+    setLayout(new BorderLayout());                                    //add the panels to frame
+    add (buttonPanel, "North");
+    add (cardPanel, "South");
+    setTitle ("Deck of Cards");
+    setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);                                 
+    pack();
+    setSize (1024, 740); 
+  }
+  
+  class ShowBtnListener implements ActionListener
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      fullDeck.turnFaceUp(true);
+      repaint();
+    }
+  }
+  
+  class ShuffleBtnListener implements ActionListener                  //shuffles the deck
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      fullDeck.shuffle();
+      repaint();
+    }
+  }
+  
+  class DealBtnListener implements ActionListener                     //deals a user selected card
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      dealInputWindow();
+    }
+  }
+  
+  class DealFirstBtnListener implements ActionListener                //deals the first card 
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      fullDeck.deal();
+      repaint();
+    }
+  }
+  
+  class AddBtnListener implements ActionListener                       //adds a user selected card
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      addInputWindow();                                                //separate method to handle popup dialogs
+    }
+  }
+  
+  class FlipBtnListener implements ActionListener                      //flips a card 
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      flipInputWindow();
+    }
+  }
+  
+  class FlipAllBtnListener implements ActionListener                   //flips all the cards
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      fullDeck.flipAll();
+      repaint();
+    }
+  }
+  
+  class QuicksortBtnListener implements ActionListener                 //uses quicksort to arrange the cards
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      fullDeck.quickSort();
+      repaint();
+    }
+  }
+  
+  class CombsortBtnListener implements ActionListener                  //uses combsort to arrange the cards
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      fullDeck.combSort();
+      repaint();
+    }
+  }
+  
+  public JDialog createDialog()
+  {
+    JDialog popup = new JDialog();                                     //creates a dialog box
+    popup.setTitle("User Input");
+    JLabel inst = new JLabel(" Enter a card: ");                   //initializes components in the dialog box
+    JLabel rankLbl = new JLabel (" Rank: ");
+    JLabel suitLbl = new JLabel (" Suit: ");
+    JButton enterBtn = new JButton (" Enter ");
+    enterBtn.addActionListener (new EnterBtnListener ());
+    JButton cancelBtn = new JButton (" Cancel ");
+    cancelBtn.addActionListener (new CancelBtnListener ());
+    JPanel optionpane = new JPanel();
+    JPanel topPanel = new JPanel();
+    JPanel middlePanel = new JPanel();
+    JPanel bottomPanel = new JPanel();
+    
+    String[] rankList = new String[13];                           //create options for combo boxes
+    for (int i = 1; i <= 13; i++)
+      rankList[i-1] = (Integer.toString(i));
+    String[] suitList = {"Spades", "Hearts", "Diamonds", "Clubs"};
+    rankText = new JComboBox(rankList);                                   //create combo boxes
+    rankText.addItemListener(new RankTextListener());
+    suitText = new JComboBox(suitList);           
+    suitText.addItemListener(new SuitTextListener());
+    rankUser = 1;
+    suitUser = 1;
+    
+    optionpane.setLayout(new BorderLayout());                                    //add the main panels to frame
+    optionpane.add(topPanel, "North");
+    optionpane.add(middlePanel, "Center");
+    optionpane.add(bottomPanel, "South");
+    
+    topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));                                         //add components to panels
+    topPanel.add(inst);
+    middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
+    middlePanel.add(rankLbl);
+    middlePanel.add(rankText);
+    middlePanel.add(suitLbl);
+    middlePanel.add(suitText);   
+    bottomPanel.setLayout(new FlowLayout());
+    bottomPanel.add(enterBtn);
+    bottomPanel.add(cancelBtn);
+    popup.setContentPane(optionpane);                                                                  //adds components to dialog
+    
+    return popup;
+  }
+  
+  public void dealInputWindow()                                                            //creates new window for deal
+  { 
+    inputDialog = createDialog();                                                          //adds new dialog
+    inputDialog.pack();
+    inputDialog.setVisible(true);
+    inputDialog.setLocationRelativeTo(null);
+    inputDialog.setDefaultCloseOperation (DISPOSE_ON_CLOSE); 
+    
+    whichBtn = 1;                                                                             //switches the actionlistener
+  }
+  
+  public void addInputWindow()                                              //creates new window for add
+  {
+    inputDialog = createDialog();                                                          //adds new dialog
+    inputDialog.pack();
+    inputDialog.setVisible(true);
+    inputDialog.setLocationRelativeTo(null);
+    inputDialog.setDefaultCloseOperation (DISPOSE_ON_CLOSE); 
+    
+    whichBtn = 2;
+  }
+  
+  public void flipInputWindow()
+  {
+    inputDialog = createDialog();                                                          //adds new dialog
+    inputDialog.pack();
+    inputDialog.setVisible(true);
+    inputDialog.setLocationRelativeTo(null);
+    inputDialog.setDefaultCloseOperation (DISPOSE_ON_CLOSE); 
+    
+    whichBtn = 3;
+  }
+  
+  private class RankTextListener implements ItemListener                       //jcombobox listener
+  {
+    public void itemStateChanged(ItemEvent event)
+    {
+      if (event.getStateChange() == ItemEvent.SELECTED)  
+      rankUser = (rankText.getSelectedIndex()+1);
+    }
+  }
+  
+  private class SuitTextListener implements ItemListener                    //jcombobox listener
+  {
+    public void itemStateChanged(ItemEvent event)
+    {
+      if (event.getStateChange() == ItemEvent.SELECTED)    
+      suitUser = (suitText.getSelectedIndex()+1);
+    }
+  }
+  
+  private class EnterBtnListener implements ActionListener
+  {
+    public void actionPerformed (ActionEvent e)
+    {                                                 
+      int pos;                                                      //position for found card
+      
+      usercard = new Card(rankUser, suitUser);
+      
+        switch(whichBtn)
+        {
+          case 1:
+            pos = fullDeck.search(usercard, 0);
+            if (pos == -1)
+              JOptionPane.showMessageDialog (null, "Card Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+              else
+              fullDeck.deal(pos+1);
+              break;
+          case 2:
+            fullDeck.add(usercard);                               //adds a new card
+            break;
+          case 3:
+            pos = fullDeck.search(usercard, 0);                     
+            if (pos == -1)
+              JOptionPane.showMessageDialog (null, "Card Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+            else
+            { 
+              while (pos != -1)                                     //searches for more than one so all cards with those values are flipped
+              {
+                fullDeck.get(pos).turn();
+                pos = fullDeck.search(usercard, pos+1);
+              }
+            }
+            break;
+        }
+        repaint();                                                         //repaint the cards
+        clearAndHide();                                                    //disposes dialog window
+    }
+  }
+  
+  private class CancelBtnListener implements ActionListener
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      clearAndHide();
+    }
+  }
+  
+  public void clearAndHide()                                       //This method clears the dialog and hides it. 
+  { 
+    inputDialog.setVisible(false);
+    inputDialog.dispose();
+  }
+}

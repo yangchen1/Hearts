@@ -1,0 +1,23 @@
+import java.awt.*;
+import javax.swing.*;
+
+class DrawDeckPanel extends JPanel
+{
+	private Deck deck;
+	public DrawDeckPanel()                                                         //separate panel for drawing
+	{
+		this.setPreferredSize (new Dimension (300, 300));                            //sets size for default constructor
+	}
+
+	public DrawDeckPanel(int width, int height, Deck deck)
+	{
+		this.setPreferredSize (new Dimension (width, height));                       //sets size
+		this.deck = deck;                                                            //gets the deck
+	}
+
+	public void paintComponent (Graphics g)                                         //paints the deck
+	{
+		this.deck.showDeck (g, 10, 50);
+	}
+
+}

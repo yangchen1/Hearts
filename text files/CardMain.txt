@@ -1,0 +1,8 @@
+class CardMain
+{
+  public static void main (String[] args)
+  {
+    CardGUI window = new CardGUI ();                            //new window, calls cardGui class 
+    window.setVisible (true);
+  }
+}
